@@ -5,7 +5,6 @@ import createError from 'http-errors';
 
 import {UserModel} from '../../models';
 import {IUser} from '../../interfaces';
-import {TokenUtil} from '../../utils';
 
 export class AdminController{
 
@@ -13,9 +12,9 @@ export class AdminController{
 
     }
 
-    registerUser = async(req : Request, res : Response, next : NextFunction) => {
+    registerAdmin = async(req : Request, res : Response, next : NextFunction) => {
         try{
-            const {username, password, occupation, email, phone, gender, address} = _.get(req, 'body');
+            const {username, password, occupation, email, phone, gender} = _.get(req, 'body');
             if(_.isNil(_.get(req.body, 'username'))){
                 let err = createError(400, 'username is either null or undefined');
                 return next(err);
@@ -26,20 +25,15 @@ export class AdminController{
                 return next(err);
             }
 
-            if(_.isNil(_.get(req.body, 'email'))){
-                let err = createError(400, 'email is either null or undefined');
-                return next(err);
-            }
+            // if(_.isNil(_.get(req.body, 'email'))){
+            //     let err = createError(400, 'email is either null or undefined');
+            //     return next(err);
+            // }
 
-            if(_.isNil(_.get(req.body, 'phone'))){
-                let err = createError(400, 'phone is either null or undefined');
-                return next(err);
-            }
-
-            if(_.isNil(_.get(req.body, 'address'))){
-                let err = createError(400, 'address is either null or undefined');
-                return next(err);
-            }
+            // if(_.isNil(_.get(req.body, 'phone'))){
+            //     let err = createError(400, 'phone is either null or undefined');
+            //     return next(err);
+            // }
 
             const saltRounds = parseInt(process.env.AUTH_SALT_ROUNDS) || 10;
             const hashedPwd = await bcrypt.hash(password, saltRounds);
@@ -47,17 +41,17 @@ export class AdminController{
             let insertObj: IUser = {
                 username : username,
                 password : hashedPwd,
+                userType : 'ADMIN',
                 occupation : occupation,
                 gender : gender,
-                emails : [{
-                    value : email,
-                    primary : true
-                }],
-                phones : [{
-                    value : phone,
-                    primary : true
-                }],
-                address : address
+                // emails : [{
+                //     value : email,
+                //     primary : true
+                // }],
+                // phones : [{
+                //     value : phone,
+                //     primary : true
+                // }],
             };
 
             let userDoc = await UserModel.insertUser(insertObj);

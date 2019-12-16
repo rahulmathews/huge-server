@@ -67,10 +67,6 @@ adminRouter.use(idVerificationMiddleware);
 
 //Admin Routes
 
-adminRouter.get('/:userId([0-9A-Za-z]{24})/countries', 
-    authMiddleware.authJwt,
-    sessionExtractionFn,
-    (req, res, next) => adminController.registerUser(req, res, next)
-)
+adminRouter.post('/register', adminController.registerAdmin);
 
 export default adminRouter;

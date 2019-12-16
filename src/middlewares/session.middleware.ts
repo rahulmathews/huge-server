@@ -59,7 +59,7 @@ export class SessionMiddleware{
 
     refreshRedisSessions = async() => {
         try{
-            let sessions = await this.redisUtil.getValue('Sessions');
+            let sessions = await this.redisUtil.getValue(config.session.REDIS_SESSION_KEY);
             if(!sessions){
                 return ;
             }
@@ -73,7 +73,7 @@ export class SessionMiddleware{
                 }
                 return sessionObj;
             })
-            let updatedSessions = await this.redisUtil.setKey('Sessions', filteredParsedSessions);
+            let updatedSessions = await this.redisUtil.setKey(config.session.REDIS_SESSION_KEY, filteredParsedSessions);
             if(updatedSessions === 'OK'){
                 return true;
             }
@@ -90,7 +90,7 @@ export class SessionMiddleware{
     getExistingSessionObj = async(sessionId : string) => {
         try{
             if(sessionId !== '' || !_.isNil(sessionId)){
-                let sessions = await this.redisUtil.getValue('Sessions');
+                let sessions = await this.redisUtil.getValue(config.session.REDIS_SESSION_KEY);
                 let parsedSessions = JSON.parse(sessions);
                 let sessionObj = _.find(parsedSessions, {sessionId : sessionId});
                 if(!sessionObj){
@@ -114,7 +114,7 @@ export class SessionMiddleware{
 
     saveNewSession = async(obj) => {
         try{
-            let sessions = await this.redisUtil.getValue('Sessions');
+            let sessions = await this.redisUtil.getValue(config.session.REDIS_SESSION_KEY);
             if(!sessions){
                 sessions = "[]";
             }
@@ -130,7 +130,7 @@ export class SessionMiddleware{
             };
 
             parsedSessions.push(dataToBePushed);
-            let updatedSessions = await this.redisUtil.setKey('Sessions', parsedSessions);
+            let updatedSessions = await this.redisUtil.setKey(config.session.REDIS_SESSION_KEY, parsedSessions);
             if(updatedSessions === 'OK'){
                 return true;
             }
@@ -145,7 +145,7 @@ export class SessionMiddleware{
 
     deleteSession = async(obj) => {
         try{
-            let sessions = await this.redisUtil.getValue('Sessions');
+            let sessions = await this.redisUtil.getValue(config.session.REDIS_SESSION_KEY);
             let parsedSessions = JSON.parse(sessions);
             let sessionObj = _.find(parsedSessions, {sessionId : obj.sessionId});
             if(sessionObj){
@@ -162,13 +162,13 @@ export class SessionMiddleware{
 
     invalidateSession = async(req: Request | any, res: Response, next : NextFunction) => {
         try{
-            let sessions = await this.redisUtil.getValue('Sessions');
+            let sessions = await this.redisUtil.getValue(config.session.REDIS_SESSION_KEY);
             let parsedSessions = JSON.parse(sessions);
             let sessionObj = _.find(parsedSessions, {sessionId : req.sessionId});
             if(sessionObj){
                 sessionObj.active = false;
                 sessionObj.lastLogout = new Date();
-                let result = await this.redisUtil.setKey('Sessions', parsedSessions);
+                let result = await this.redisUtil.setKey(config.session.REDIS_SESSION_KEY, parsedSessions);
                 if(result === 'OK'){
                     req.logout = true;
                     return next();

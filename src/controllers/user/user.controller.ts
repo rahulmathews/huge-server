@@ -56,8 +56,7 @@ export class UserController{
                 phones : [{
                     value : phone,
                     primary : true
-                }],
-                address : address
+                }]
             };
 
             let userDoc = await UserModel.insertUser(insertObj);

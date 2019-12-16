@@ -3,6 +3,7 @@ const router = express.Router();
 
 import commonRouter from './common.routes';
 import userRouter from './user.routes';
+import adminRouter from './admin.routes';
 
 /* Ping Api*/
 router.get('/ping', function(req, res, next) {
@@ -13,7 +14,7 @@ router.get('/ping', function(req, res, next) {
 router.use('/common', commonRouter);
 
 /* Admin Routes*/
-// router.use('/admin', adminRouter);
+router.use('/admin', adminRouter);
 
 /* User Routes*/
 router.use('/users', userRouter);

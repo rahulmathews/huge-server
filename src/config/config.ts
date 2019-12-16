@@ -1,6 +1,7 @@
 export default{
     "session" : {
-        "SESSION_EXPIRATION_DAYS" : 1 //in days
+        "SESSION_EXPIRATION_DAYS" : 1, //in days
+        "REDIS_SESSION_KEY" : "Sessions"
     },
     "cookie" : {
         "COOKIE_MAX_AGE" : "1d"

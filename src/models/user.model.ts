@@ -1,22 +1,7 @@
 import mongoose, { Model } from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate';
 
-import { IUserDoc, IAddressDoc } from '../interfaces';
-
-
-const AddressSchema = new mongoose.Schema<IAddressDoc>({
-    name : {
-        type : String,
-        required : true,
-        lowercase : true
-    },
-    street : {type : String},
-    city  : {type : String},
-    district : {type : String},
-    state : {type : String},
-    country : {type : String},
-    pincode : {type : Number}
-}, {_id : false});
+import { IUserDoc } from '../interfaces';
 
 const UserSchema = new mongoose.Schema<IUserDoc>({
     username : {
@@ -53,8 +38,7 @@ const UserSchema = new mongoose.Schema<IUserDoc>({
             type : String
         },
         primary : {type : Boolean, default : false}
-    }],
-    address : {type : AddressSchema}
+    }]
     
 }, {timestamps : true});
 

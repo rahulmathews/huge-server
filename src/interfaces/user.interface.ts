@@ -1,7 +1,5 @@
 import {Document, Schema} from 'mongoose';
 
-import {IAddress} from './address.interface';
-
 export interface IUser{
     username: string;
     password: string;
@@ -19,8 +17,7 @@ export interface IUser{
     images?: Array<{
         link : string,
         primary : boolean,
-    }>;
-    address?: IAddress;
+    }>
 }
 
 export interface IUserDoc extends IUser, Document {
