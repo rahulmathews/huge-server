@@ -1,2 +1,2 @@
 # huge-server
-A Simple Express server for Huge project
+A simple assessment for huge backend using Express js and Mongodb
