@@ -24,7 +24,7 @@ export class PassportUtil{
 
             try{
                 let userDoc = await UserModel.searchOne({username : username});
-                let ifMatchedPwd = await bcrypt.compare(password, userDoc.password);
+                let ifMatchedPwd = userDoc ? await bcrypt.compare(password, userDoc.password) : null;
                 if(ifMatchedPwd){
                     return done(null, userDoc);
                 }

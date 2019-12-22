@@ -1,6 +1,7 @@
 import express, {Express} from 'express';
 import createError from 'http-errors';
 import helmet from 'helmet';
+import cors from 'cors';
 
 import './datasources'; //Import connections here
 import router from './routes';
@@ -21,6 +22,9 @@ import {ErrorHandlerUtil, LoggerUtil, RedisUtil, TokenUtil} from './utils';
 
       //Initialize Logger
       new LoggerUtil(this.app);
+
+      //Cors Mechanism
+      this.app.use(cors());
 
       //Third Party middlewares
       this.app.use(express.json());
