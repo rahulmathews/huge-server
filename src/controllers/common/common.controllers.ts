@@ -26,20 +26,20 @@ export class CommonController{
                 return next(err);
             }
 
-            if(_.isNil(_.get(req.body, 'email'))){
-                let err = createError(400, 'email is either null or undefined');
-                return next(err);
-            }
+            // if(_.isNil(_.get(req.body, 'email'))){
+            //     let err = createError(400, 'email is either null or undefined');
+            //     return next(err);
+            // }
 
-            if(_.isNil(_.get(req.body, 'phone'))){
-                let err = createError(400, 'phone is either null or undefined');
-                return next(err);
-            }
+            // if(_.isNil(_.get(req.body, 'phone'))){
+            //     let err = createError(400, 'phone is either null or undefined');
+            //     return next(err);
+            // }
 
-            if(_.isNil(_.get(req.body, 'address'))){
-                let err = createError(400, 'address is either null or undefined');
-                return next(err);
-            }
+            // if(_.isNil(_.get(req.body, 'address'))){
+            //     let err = createError(400, 'address is either null or undefined');
+            //     return next(err);
+            // }
 
             const saltRounds = parseInt(process.env.AUTH_SALT_ROUNDS) || 10;
             const hashedPwd = await bcrypt.hash(password, saltRounds);
@@ -49,14 +49,14 @@ export class CommonController{
                 password : hashedPwd,
                 occupation : occupation,
                 gender : gender,
-                emails : [{
-                    value : email,
-                    primary : true
-                }],
-                phones : [{
-                    value : phone,
-                    primary : true
-                }]
+                // emails : [{
+                //     value : email,
+                //     primary : true
+                // }],
+                // phones : [{
+                //     value : phone,
+                //     primary : true
+                // }]
             };
 
             let userDoc = await UserModel.insertUser(insertObj);

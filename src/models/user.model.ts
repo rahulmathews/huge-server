@@ -18,21 +18,21 @@ const UserSchema = new mongoose.Schema<IUserDoc>({
     userType : {type : String, enum : ['USER', 'ADMIN'], default : 'USER' },
     gender : {type : String, enum : ['MALE', 'FEMALE', 'OTHERS']},
     occupation : {type : String, lowercase : true},
-    emails : [{
-        value : {
-            type: String,
-            lowercase : true,
-            unique : true
-        },
-        primary : {type : Boolean, default : false}
-    }],
-    phones : [{
-        value : {
-            type : String,
-            unique : true
-        },
-        primary : {type : Boolean, default : false}
-    }],
+    // emails : [{
+    //     value : {
+    //         type: String,
+    //         lowercase : true,
+    //         unique : true
+    //     },
+    //     primary : {type : Boolean, default : false}
+    // }],
+    // phones : [{
+    //     value : {
+    //         type : String,
+    //         unique : true
+    //     },
+    //     primary : {type : Boolean, default : false}
+    // }],
     images: [{
         link : {
             type : String
