@@ -1,17 +1,16 @@
 import express, {Request, Response, NextFunction} from 'express';
-const userRouter = express.Router();
+const sectionRouter = express.Router();
 
 import createError from 'http-errors';
 import * as _ from 'lodash';
 
 // import categoryRouter from './category.routes';
-import {UserModel} from '../models';
+import {SectionModel} from '../models';
 import {SessionMiddleware, AuthMiddleware} from '../middlewares';
-import {UserController} from '../controllers';
-import sectionRouter from './section.routes';
+import {SectionController} from '../controllers';
 
 //Initialize controllers
-const userController = new UserController();
+const sectionController = new SectionController();
 
 //Session Middleware
 let session = new SessionMiddleware();
@@ -28,13 +27,13 @@ const sessionExtractionFn = async(req:Request, res: Response, next: NextFunction
 //Middleware to verfiy the Ids from parameters
 const idVerificationMiddleware = async(req: Request, res: Response, next: NextFunction) => {
     try{
-        userRouter.param('userId', function(req, res, next, val){
+        sectionRouter.param('userId', function(req, res, next, val){
             if(_.isNil(val)){
                 let error = createError(400, 'User Id is either null or undefined');
                 throw error
             }
 
-            UserModel.findOne({_id : val})
+            SectionModel.findOne({_id : val})
             .then(function(userDoc){
                 if(!userDoc){
                     let error = createError(400, 'Invalid User Id');
@@ -57,24 +56,27 @@ const idVerificationMiddleware = async(req: Request, res: Response, next: NextFu
 
 
 /* Ping Api*/
-userRouter.get('/ping', function(req, res, next) {
+sectionRouter.get('/ping', function(req, res, next) {
   res.send('pong');
 });
 
 //Router-level Middlewares
 
 //Id Verfication Middleware
-userRouter.use(idVerificationMiddleware);
+// sectionRouter.use(idVerificationMiddleware);
 
-//User Routes
+//Section Routes
 
-userRouter.get('/:userId([0-9A-Za-z]{24})/countries', 
+sectionRouter.get('/:userId([0-9A-Za-z]{24})/countries', 
     authMiddleware.authJwt,
     sessionExtractionFn,
-    (req, res, next) => userController.registerUser(req, res, next)
+    (req, res, next) => sectionController.addSection(req, res, next)
 )
 
-// Section Routes
-userRouter.use('/:userId([0-9A-Za-z]{24})/sections', sectionRouter);
+sectionRouter.post('/', 
+    authMiddleware.authJwt,
+    sessionExtractionFn,
+    (req, res, next) => sectionController.addSection(req, res, next)
+)
 
-export default userRouter;
+export default sectionRouter;
